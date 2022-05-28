@@ -29,9 +29,24 @@ describe("React TodoMVC", () => {
     })
     
     it("adds three todos", () => {
-        cy.get(".new-todo").type(`${TODO_ITEM_ONE}{enter}`)
-        cy.get(".new-todo").type(`${TODO_ITEM_TWO}{enter}`)
-        cy.get(".new-todo").type(`${TODO_ITEM_THREE}{enter}`)
+        // Used createDefaultTodos() from commands.js
+        cy.createDefaultTodos()
         cy.get(".todo-list li").should("have.length", 3)
+    })
+
+    it("should append new items to the bottom of the list", () => {
+        cy.createDefaultTodos()
+
+        // Todo 1
+        cy.get(".todo-list li").eq(0).find("label").should("contain", TODO_ITEM_ONE)
+
+        // Todo 2
+        cy.get(".todo-list li").eq(1).find("label").should("contain", TODO_ITEM_TWO)
+
+        // Todo 3
+        cy.get(".todo-list li").eq(2).find("label").should("contain", TODO_ITEM_THREE)
+
+        // Checks to see if span.todo-count value equals the number of items added
+        cy.get(".todo-count").contains("3 items left")
     })
 })
